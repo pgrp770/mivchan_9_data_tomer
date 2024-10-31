@@ -24,7 +24,7 @@ class MissionQuery(ObjectType):
     def resolve_mission_by_dates(root, info, start_date, end_date):
         with session_maker() as session:
             return (session.query(Missions)
-                    .filter(Missions.mission_date >= start_date and Missions.mission_date <= end_date)
+                    .filter(Missions.mission_date.between(start_date,end_date) )
                     .all())
 
     mission_by_country = List(MissionsType, country=String(required=True))
@@ -57,9 +57,6 @@ class MissionQuery(ObjectType):
         with session_maker() as session:
             return (session.query(Missions)
                     .join(Target)
-                    .join(TargetType)
+                    .join(TargetTypes)
                     .filter(TargetTypes.target_type_name == target_type)
                     .all())
-
-
-

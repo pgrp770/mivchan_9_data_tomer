@@ -9,7 +9,6 @@ from app.gql.types.target_types import TargetType
 
 class AddTarget(Mutation):
     class Arguments:
-        target_id = Int(required=True)
         mission_id = Int(required=True)
         city_id = Int(required=True)
         target_type_id = Int(required=True)
@@ -21,7 +20,6 @@ class AddTarget(Mutation):
     @staticmethod
     def mutate(root,
                info,
-               target_id,
                mission_id,
                city_id,
                target_type_id,
@@ -29,7 +27,6 @@ class AddTarget(Mutation):
                target_priority):
         with session_maker() as session:
             new_target = Target(
-                target_id=target_id,
                 mission_id=mission_id,
                 city_id=city_id,
                 target_type_id=target_type_id,
