@@ -8,16 +8,10 @@ engine = create_engine(DB_URL)
 session_maker = sessionmaker(bind=engine)
 
 
-
-
-class Test(Base):
-    __tablename__ = "test"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-
-
 def init_db():
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+
 
 if __name__ == '__main__':
     init_db()

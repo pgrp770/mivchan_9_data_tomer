@@ -1,5 +1,5 @@
-from graphene import ObjectType
+from app.gql.queries.mission_query import MissionQuery
 
 
-class Query(ObjectType):
+class Query(MissionQuery):
     pass

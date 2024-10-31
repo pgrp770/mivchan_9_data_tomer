@@ -9,7 +9,7 @@ class Target(Base):
     target_id = Column(Integer, primary_key=True, autoincrement=True)
 
     mission_id = Column(Integer, ForeignKey("missions.mission_id"))
-    mission = relationship("Mission", back_populates="target")
+    mission = relationship("Missions", back_populates="target")
 
     city_id = Column(Integer, ForeignKey("cities.city_id"))
     city = relationship("City", back_populates="targets")

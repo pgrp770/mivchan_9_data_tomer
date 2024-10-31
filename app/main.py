@@ -7,15 +7,15 @@ from app.gql.query import Query
 from app.routes.user_route import purchase_bluprint
 
 app = Flask(__name__)
-# schema = Schema(query=Query, mutation=Mutation)
-# app.add_url_rule(
-#     '/graphql',
-#     view_func=GraphQLView.as_view(
-#         'graphql',
-#         schema=schema,
-#         graphiql=True
-#     )
-# )
+schema = Schema(query=Query, mutation=Mutation)
+app.add_url_rule(
+    '/graphql',
+    view_func=GraphQLView.as_view(
+        'graphql',
+        schema=schema,
+        graphiql=True
+    )
+)
 app.register_blueprint(purchase_bluprint, url_prefix="/api/purchase")
 if __name__ == '__main__':
     app.run()
