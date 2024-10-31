@@ -1,4 +1,4 @@
-from graphene import Mutation, Date, Float, Field, Int
+from graphene import Mutation, Date, Float, Field, Int, Boolean
 
 from app.db.database import session_maker
 from app.db.models import Missions
@@ -92,3 +92,22 @@ class UpdateMission(Mutation):
             session.commit()
             session.refresh(maybe_mission)
             return AddMission(mission=maybe_mission)
+
+
+class Delete(Mutation):
+    class UpdateMission(Mutation):
+        class Arguments:
+            mission_id = Int(required=True)
+
+        success = Boolean()
+
+        @staticmethod
+        def mutate(root, info, mission_id,):
+            with session_maker() as session:
+                maybe_mission = session.query(Missions).filter(Missions.mission_id == mission_id).first()
+                if maybe_mission is None:
+                    raise Exception("there is on mission with this id")
+                session.delete(maybe_mission)
+                session.commit()
+                session.refresh(maybe_mission)
+                return AddMission(success=True)
