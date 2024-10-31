@@ -13,6 +13,7 @@ class CityType(ObjectType):
 
     country_id = Int()
     country = Field(CountryType)
+
     @staticmethod
     def resolve_country(root, info):
         with session_maker() as session:

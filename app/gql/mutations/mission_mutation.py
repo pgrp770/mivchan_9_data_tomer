@@ -2,7 +2,7 @@ from graphene import Mutation, Date, Float, Field, Int, Boolean, String
 from returns.result import Failure
 
 from app.db.database import session_maker
-from app.db.models import Missions, Target
+from app.db.models import Missions
 from app.gql.types.mission_type import MissionsType
 from sqlalchemy.sql.expression import func
 
@@ -105,7 +105,7 @@ class DeleteMission(Mutation):
     message = String()
 
     @staticmethod
-    def mutate(root, info, mission_id,):
+    def mutate(root, info, mission_id, ):
         res = delete_mission(mission_id)
         if isinstance(res, Failure):
             return DeleteMission(success=False, message=res.failure())

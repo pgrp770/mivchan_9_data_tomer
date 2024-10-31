@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.db.models import Base
