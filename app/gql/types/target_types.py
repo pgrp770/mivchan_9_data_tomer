@@ -1,4 +1,4 @@
-from graphene import ObjectType, Int, String, Float
+from graphene import ObjectType, Int, String
 
 
 class TargetType(ObjectType):
