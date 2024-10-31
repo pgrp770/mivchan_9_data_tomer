@@ -1,11 +1,13 @@
 from graphene import ObjectType, Field, Int, List, Date, String
 
 from app.db.database import session_maker
+from app.db.models import TargetTypes
 from app.db.models.city import City
 from app.db.models.country import Country
 from app.db.models.mission import Missions
 from app.db.models.target import Target
 from app.gql.types.mission_type import MissionsType
+from app.gql.types.target_types import TargetType
 
 
 class MissionQuery(ObjectType):
@@ -45,6 +47,18 @@ class MissionQuery(ObjectType):
             return (session.query(Missions)
                     .join(Target)
                     .filter(Target.target_industry == target_industry)
+                    .all())
+
+    mission_by_target_type = List(MissionsType, target_type=String(required=True))
+
+
+    @staticmethod
+    def resolve_mission_by_target_type(root, info, target_type):
+        with session_maker() as session:
+            return (session.query(Missions)
+                    .join(Target)
+                    .join(TargetType)
+                    .filter(TargetTypes.target_type_name == target_type)
                     .all())
 
 

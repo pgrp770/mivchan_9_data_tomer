@@ -94,7 +94,7 @@ class UpdateMission(Mutation):
             return AddMission(mission=maybe_mission)
 
 
-class Delete(Mutation):
+class DeleteMission(Mutation):
     class UpdateMission(Mutation):
         class Arguments:
             mission_id = Int(required=True)
