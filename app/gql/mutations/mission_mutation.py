@@ -1,9 +1,12 @@
-from graphene import Mutation, Date, Float, Field, Int, Boolean
+from graphene import Mutation, Date, Float, Field, Int, Boolean, String
+from returns.result import Failure
 
 from app.db.database import session_maker
-from app.db.models import Missions
+from app.db.models import Missions, Target
 from app.gql.types.mission_type import MissionsType
 from sqlalchemy.sql.expression import func
+
+from app.repository.mission_repository import delete_mission
 
 
 class AddMission(Mutation):
@@ -99,13 +102,11 @@ class DeleteMission(Mutation):
         mission_id = Int(required=True)
 
     success = Boolean()
+    message = String()
 
     @staticmethod
     def mutate(root, info, mission_id,):
-        with session_maker() as session:
-            maybe_mission = session.query(Missions).filter(Missions.mission_id == mission_id).first()
-            if maybe_mission is None:
-                raise Exception("there is on mission with this id")
-            session.delete(maybe_mission)
-            session.commit()
-            return DeleteMission(success=True)
+        res = delete_mission(mission_id)
+        if isinstance(res, Failure):
+            return DeleteMission(success=False, message=res.failure())
+        return DeleteMission(success=True, message="you have successfully deleted the mission with the related target")

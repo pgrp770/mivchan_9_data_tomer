@@ -1,3 +1,5 @@
+from returns.result import Failure, Success
+
 from app.db.database import session_maker
 from app.db.models import Missions, Target, City, Country, TargetTypes
 
@@ -39,3 +41,17 @@ def get_mission_by_target_type(target_type):
                 .join(TargetTypes)
                 .filter(TargetTypes.target_type_name == target_type)
                 .all())
+
+
+def delete_mission(mission_id):
+    with session_maker() as session:
+        maybe_mission: Missions = session.query(Missions).filter(Missions.mission_id == mission_id).first()
+        if maybe_mission is None:
+            return Failure("there is on mission with this id")
+        missions_targets = session.query(Target).filter(Target.mission_id == maybe_mission.mission_id).all()
+        for target in missions_targets:
+            session.delete(target)
+            session.commit()
+        session.delete(maybe_mission)
+        session.commit()
+        return Success(True)
